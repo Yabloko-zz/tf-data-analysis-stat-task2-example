@@ -2,16 +2,19 @@ import pandas as pd
 import numpy as np
 
 from scipy.stats import norm
+from scipy.stats import chi2
 
-
-chat_id = 123456 # Ваш chat ID, не меняйте название переменной
+chat_id = 38897891 # Ваш chat ID, не меняйте название переменной
 
 def solution(p: float, x: np.array) -> tuple:
-    # Измените код этой функции
-    # Это будет вашим решением
-    # Не меняйте название функции и её аргументы
+    
+    n = len(x)
     alpha = 1 - p
-    loc = x.mean()
-    scale = np.sqrt(np.var(x)) / np.sqrt(len(x))
-    return loc - scale * norm.ppf(1 - alpha / 2), \
-           loc - scale * norm.ppf(alpha / 2)
+    
+    z1 = chi2.ppf(alpha/2,df=2*n)
+    z2 = chi2.ppf(1-alpha/2,df=2*n)
+    
+    right = np.sqrt(sum(x**2)/(z1*47))
+    left = np.sqrt(sum(x**2)/(z2*47))
+    
+    return left, right
